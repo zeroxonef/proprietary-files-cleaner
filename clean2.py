@@ -8,13 +8,15 @@ def main():
     parser = argparse.ArgumentParser(description="proprietary-file-cleaner")
     parser.add_argument('-p', required=True, help='path to proprietary-files.txt')
     parser.add_argument('-l', required=True, help='path to list')
+    parser.add_argument('-o', default='cleaned-proprietary-files.txt', help='path to output file (default: cleaned-proprietary-files.txt)')
 
     args = parser.parse_args()
 
     # Define file paths from command-line arguments
     files = {
         'target': args.p,
-        'list': args.l
+        'list': args.l,
+	'output': args.o
     }
 
     RED = "\033[31m"
@@ -45,7 +47,7 @@ def main():
                 notfound_set.add(path)
 
     # Read target file and write lines not in notfound_set to a new file
-    with open(files['target'], 'r') as pb, open("cleaned-proprietary-files.txt", 'w') as out:
+    with open(files['target'], 'r') as pb, open(files['output'], 'w') as out:
         for line in pb:
             if line.strip() in notfound_set:
                 print(f"{RED}Removed {line.strip()}! {RESET}")
